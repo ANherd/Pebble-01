@@ -1,0 +1,422 @@
+---
+title: "Group 5 — Heart failure and Asia"
+subtitle: "Studio wall"
+author: "Group names here"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+# Spine
+
+> Who dies after heart failure, who grew up poor in the GSS, and where in Asia is life short?
+
+This sentence stays at the top. Every panel must attach to it. If a plot cannot be introduced in a clause that hangs off this line, it is off the wall.
+
+# Introduction — the tables we own
+
+This folder is ours for the ten days. Three tables, three shapes.
+
+- **Panel A** (`panel-A.csv`) — heart-failure clinic file. 0/1 flags have been recoded to yes/no. Quants: age, ejection fraction, serum measures, time.
+- **Panel B** (`panel-B.csv`) — GSS 1974–2002: ethnicity, city at 16, low income at 16, immigrant, plus years of education (Quant).
+- **Panel C** (`panel-C.csv`) — gapminder 2007, **Asia only**. Stand-in for an NFHS / malaria map. India is one country row, not districts.
+
+C is not a Bangalore street map. If we want feet-on-ground geography, that is a different brick (OSM), not this file.
+
+We load from this folder:
+
+```{r}
+# label: setup
+library(readr)
+library(tidyverse)
+library(skimr)
+
+
+A <- read_csv("data/panel-A.csv")
+B <- read_csv("data/panel-B.csv")
+C <- read_csv("data/panel-C.csv")
+glimpse(A)
+```
+
+Found tables train the mark. A campus Free Hunch, if we collect one, is a **made** panel of the same pair type — new people, old grammar. It does not replace A, B, or C.
+
+
+
+
+
+# Panel A — body / measure
+
+*ejection_fraction, serum_creatinine, age are Quant. DEATH_EVENT, diabetes, smoking are Quals.*
+```{r}
+
+
+library(tidyverse)
+library(skimr)
+library(mosaic)
+
+
+A <- read_csv("data/panel-A.csv")
+B <- read_csv("data/panel-B.csv")
+C <- read_csv("data/panel-C.csv")
+glimpse(A)
+```
+
+```{r}
+skim(A)
+```
+
+```{r}
+A_Mod <- A |> dplyr:: mutate(anaemia   =as.factor(anaemia  ),diabetes  =as.factor( diabetes ),smoking  =as.factor(smoking ),DEATH_EVENT =as.factor(DEATH_EVENT),sex =as.factor(sex))
+
+glimpse(A_Mod)
+```
+
+
+
+
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+```r
+# glimpse() / inspect() / skim()
+```
+```{r}
+
+```
+
+### 2. Ask
+
+One question *this* table can answer. One it cannot. Write both.
+
+
+Possibly can answer:
+
+
+
+1. Who smokes more, male or female?
+2. How does the age distribution differ between patients who survived and patients who died?
+3. Is the blood pressure of people who die higer or lower than the people who live 
+4. Do patients with anaemia die more often? 
+5. Does sodium level in the blood differ between patients who survived and died?
+6. Is there a difference in heart-damage between diabetics and non-diabetics?
+7. Is High blood pressure affected by age?
+8. Does a weaker heart mean patients don't survive as long?
+
+
+Possibly cannot answer:
+
+
+1.Does getting older cause death in heart failure patients? (The data does not show that one causes the other)
+2.What happened to patients after the study ended? (we don't know about later outcomes.)
+
+
+Tea test 
+
+```{r}
+
+A |> gf_histogram(~ age, fill = ~ DEATH_EVENT)
+A |> 
+  group_by(DEATH_EVENT) |> 
+  summarize(mean_age = mean(age, na.rm = TRUE))
+mosaic::t_test(age ~ DEATH_EVENT, data = A)
+
+```
+
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+### 5. Make
+
+These first few charts are what I want to check out. I may/will not have these charts in the final rendered Quarto, but want to comment on findings if needed. If any chart is surprising, it stays.
+
+1.
+{r}
+ggplot(A, aes(x = sex , fill = sex)) + geom_bar()
+
+
+2.
+{r}
+ggplot(A, aes(x = age)) + geom_histogram()
+ggplot(A, aes(x = age, fill = DEATH_EVENT)) +geom_histogram()
+
+t_test
+
+{r}
+A |> gf_histogram(~ age, fill = ~ DEATH_EVENT)
+A |> 
+  group_by(DEATH_EVENT) |> 
+  summarize(mean_age = mean(age, na.rm = TRUE))
+mosaic::t_test(age ~ DEATH_EVENT, data = A)
+
+
+3.
+{r}
+A |> ggplot(aes(x = age)) +
+  geom_histogram()
+A |> ggplot(aes(x = age, fill = high_blood_pressure)) +
+  geom_histogram()
+
+t_test
+
+{r}
+A |> gf_histogram(~ age, fill = ~ high_blood_pressure)
+A |> 
+  group_by(high_blood_pressure) |> 
+  summarize(mean_age = mean(age, na.rm = TRUE))
+mosaic::t_test(age ~ high_blood_pressure, data = A)
+
+4.
+{r}
+ggplot(A, aes(x = anaemia)) +geom_bar()
+ggplot(A, aes(x = anaemia, fill = DEATH_EVENT)) +geom_bar()
+
+
+5.
+{r}
+ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium)) +geom_boxplot()
+ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium, fill = DEATH_EVENT)) +geom_boxplot()
+
+
+6.
+{r}
+ggplot(A, aes(x = time)) + geom_histogram()
+
+
+7.
+{r}
+A |> ggplot(aes(x = high_blood_pressure, y = age)) +
+  geom_boxplot()
+
+8.
+{r}
+A |> ggplot(aes(x = ejection_fraction, y = time)) +geom_point()
+A |> ggplot(aes(x = ejection_fraction, y = time, color = DEATH_EVENT)) +
+  geom_point()
+
+make Q2
+
+```{r}
+ggplot(A, aes(x = age)) + geom_histogram()
+ggplot(A, aes(x = age, fill = DEATH_EVENT)) +geom_histogram()
+```
+
+t_test
+```{r}
+A |> gf_histogram(~ age, fill = ~ DEATH_EVENT)
+A |> 
+  group_by(DEATH_EVENT) |> 
+  summarize(mean_age = mean(age, na.rm = TRUE))
+mosaic::t_test(age ~ DEATH_EVENT, data = A)
+```
+
+
+### 6. Say
+
+Patients who died were older on average (about 65 years) than those who survived (about 59). The difference of roughly 6.5 years is statistically significant (t = -4.19, p= 4.735e-05 (0.00004735), p < 0.001)
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+
+# Panel B — category / talk
+
+*immigrant × lowincome16, ethnicity × city16. education is years — Quant. Do not average ethnicity.*
+```{r}
+
+glimpse(B)
+
+```
+
+```{r}
+skim(B)
+```
+
+
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+```r
+# glimpse() / inspect() / skim()
+```
+
+### 2. Ask
+
+One question *this* table can answer. One it cannot. Write both.
+
+
+1. Were immigrants more likely to grow up in a low-income family?
+2. Does education differ between people who grew up low-income and those who didn't?
+3. Does growing up low-income relate to how many kids someone has later? (Main Character Question)
+4.  Do people with more years of education have fewer kids?
+5.  Do immigrants have a different number of kids than non-immigrants?
+6. Do people who experienced low income at age 16 have fewer years of education?
+7.  How many years of education do people in the dataset have?
+
+Test
+
+```{r}
+vcd::structable(kids ~ immigrant, data=B) |> vcd:: mosaic()
+vcd::structable(city16~immigrant,data =B) |> vcd::mosaic()
+vcd::structable(kids ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
+
+
+```
+```{r}
+
+ mosaic::xchisq.test(kids~ immigrant, data = B)
+```
+
+
+
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+### 5. Make
+
+Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+```r
+# human chunk
+
+# ## Prompt we actually used
+# ai_draft
+# ours
+```
+
+### 6. Say
+
+Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+
+# Panel C — place
+
+*Asia-only lifeExp / gdpPercap / pop. Join to rnaturalearth; unmatched names are a brick.*
+
+Geometry is not in the CSV. Join in R, then use the same seven headings.
+
+```r
+# library(sf)
+# library(rnaturalearth)
+# world <- ne_countries(scale = "medium", returnclass = "sf")
+# # join on country name; list the unmatched labels
+```
+
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+```{r}
+# glimpse() / inspect() / skim()
+glimpse (A)
+```
+
+### 2. Ask
+
+One question *this* table can answer. One it cannot. Write both.
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+### 5. Make
+
+Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+```r
+# human chunk
+
+# ## Prompt we actually used
+# ai_draft
+# ours
+```
+
+### 6. Say
+
+Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+
+# Conclusion
+
+What the spine looks like after three panels.
+
+- The question we will defend in ninety seconds
+- What we will **not** claim
+- Which lines were human, which were machine
+- Limits: sample, missingness, the test we did not run
+- Gift for the steal-this strip (palette, annotation, join trick)
+
+```r
+# sessionInfo()
+```
+```r
+ponel-A.csv -> read -> save it in my memory so I can chart it. 
+
+```
+
+```{r}
+#| message: true
+library(tidyverse) 
+
+```
+
+
+
+```{r}
+myPanelAData <- read_csv(file = "data/panel-A.csv")
+
+```
+
+
+```{r}
+diamonds |> 
+
+ggplot(
+
+aes(x = carat, y = price, color = cut, shape = cut))+
+
+geom_point()
+  
+```
+
+"install.packages"
+```{r}
+installed.packages("vcd")
+```
+```{r}
+library(vcd)
+```
+ 
+
+
+
