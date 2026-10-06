@@ -41,13 +41,10 @@ glimpse(A)
 
 Found tables train the mark. A campus Free Hunch, if we collect one, is a **made** panel of the same pair type — new people, old grammar. It does not replace A, B, or C.
 
-
-
-
-
 # Panel A — body / measure
 
 *ejection_fraction, serum_creatinine, age are Quant. DEATH_EVENT, diabetes, smoking are Quals.*
+
 ```{r}
 
 
@@ -72,17 +69,14 @@ A_Mod <- A |> dplyr:: mutate(anaemia   =as.factor(anaemia  ),diabetes  =as.facto
 glimpse(A_Mod)
 ```
 
-
-
-
-
 ### 1. See the table
 
 What is a case? Which columns are Quant / Qual? What is missing?
 
-```r
+``` r
 # glimpse() / inspect() / skim()
 ```
+
 ```{r}
 
 ```
@@ -91,29 +85,24 @@ What is a case? Which columns are Quant / Qual? What is missing?
 
 One question *this* table can answer. One it cannot. Write both.
 
-
 Possibly can answer:
 
-
-
-1. Who smokes more, male or female?
-2. How does the age distribution differ between patients who survived and patients who died?
-3. Is the blood pressure of people who die higer or lower than the people who live 
-4. Do patients with anaemia die more often? 
-5. Does sodium level in the blood differ between patients who survived and died?
-6. Is there a difference in heart-damage between diabetics and non-diabetics?
-7. Is High blood pressure affected by age?
-8. Does a weaker heart mean patients don't survive as long?
-
+1.  Who smokes more, male or female?
+2.  How does the age distribution differ between patients who survived and patients who died?
+3.  Is the blood pressure of people who die higer or lower than the people who live
+4.  Do patients with anaemia die more often?
+5.  Does sodium level in the blood differ between patients who survived and died?
+6.  Is there a difference in heart-damage between diabetics and non-diabetics?
+7.  Is High blood pressure affected by age?
+8.  Does a weaker heart mean patients don't survive as long?
 
 Possibly cannot answer:
 
+1. Does getting older cause death in heart failure patients? (The data does not show that one causes the other)
 
-1.Does getting older cause death in heart failure patients? (The data does not show that one causes the other)
-2.What happened to patients after the study ended? (we don't know about later outcomes.)
+2. What happened to patients after the study ended? (we don't know about later outcomes.)
 
-
-Tea test 
+T_test
 
 ```{r}
 
@@ -124,7 +113,6 @@ A |>
 mosaic::t_test(age ~ DEATH_EVENT, data = A)
 
 ```
-
 
 ### 3. Choose a mark
 
@@ -138,69 +126,42 @@ What do we think we will see? One sentence, before Run.
 
 These first few charts are what I want to check out. I may/will not have these charts in the final rendered Quarto, but want to comment on findings if needed. If any chart is surprising, it stays.
 
-1.
-{r}
-ggplot(A, aes(x = sex , fill = sex)) + geom_bar()
+1.  {r} ggplot(A, aes(x = sex , fill = sex)) + geom_bar()
 
 
-2.
-{r}
-ggplot(A, aes(x = age)) + geom_histogram()
-ggplot(A, aes(x = age, fill = DEATH_EVENT)) +geom_histogram()
+
+2.  {r} ggplot(A, aes(x = age)) + geom_histogram() ggplot(A, aes(x = age, fill = DEATH_EVENT)) +geom_histogram()
 
 t_test
 
-{r}
-A |> gf_histogram(~ age, fill = ~ DEATH_EVENT)
-A |> 
-  group_by(DEATH_EVENT) |> 
-  summarize(mean_age = mean(age, na.rm = TRUE))
-mosaic::t_test(age ~ DEATH_EVENT, data = A)
+{r} A \|\> gf_histogram(\~ age, fill = \~ DEATH_EVENT) A \|\> group_by(DEATH_EVENT) \|\> summarize(mean_age = mean(age, na.rm = TRUE)) mosaic::t_test(age \~ DEATH_EVENT, data = A)
 
 
-3.
-{r}
-A |> ggplot(aes(x = age)) +
-  geom_histogram()
-A |> ggplot(aes(x = age, fill = high_blood_pressure)) +
-  geom_histogram()
+
+3.  {r} A \|\> ggplot(aes(x = age)) + geom_histogram() A \|\> ggplot(aes(x = age, fill = high_blood_pressure)) + geom_histogram()
 
 t_test
 
-{r}
-A |> gf_histogram(~ age, fill = ~ high_blood_pressure)
-A |> 
-  group_by(high_blood_pressure) |> 
-  summarize(mean_age = mean(age, na.rm = TRUE))
-mosaic::t_test(age ~ high_blood_pressure, data = A)
-
-4.
-{r}
-ggplot(A, aes(x = anaemia)) +geom_bar()
-ggplot(A, aes(x = anaemia, fill = DEATH_EVENT)) +geom_bar()
+{r} A \|\> gf_histogram(\~ age, fill = \~ high_blood_pressure) A \|\> group_by(high_blood_pressure) \|\> summarize(mean_age = mean(age, na.rm = TRUE)) mosaic::t_test(age \~ high_blood_pressure, data = A)
 
 
-5.
-{r}
-ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium)) +geom_boxplot()
-ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium, fill = DEATH_EVENT)) +geom_boxplot()
+4.  {r} ggplot(A, aes(x = anaemia)) +geom_bar() ggplot(A, aes(x = anaemia, fill = DEATH_EVENT)) +geom_bar()
 
 
-6.
-{r}
-ggplot(A, aes(x = time)) + geom_histogram()
+5.  {r} ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium)) +geom_boxplot() ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium, fill = DEATH_EVENT)) +geom_boxplot()
 
 
-7.
-{r}
-A |> ggplot(aes(x = high_blood_pressure, y = age)) +
-  geom_boxplot()
+6.  {r} ggplot(A, aes(x = time)) + geom_histogram()
 
-8.
-{r}
-A |> ggplot(aes(x = ejection_fraction, y = time)) +geom_point()
-A |> ggplot(aes(x = ejection_fraction, y = time, color = DEATH_EVENT)) +
-  geom_point()
+
+7.  {r} A \|\> ggplot(aes(x = high_blood_pressure, y = age)) + geom_boxplot()
+
+
+
+8.  {r} A \|\> ggplot(aes(x = ejection_fraction, y = time)) +geom_point() A \|\> ggplot(aes(x = ejection_fraction, y = time, color = DEATH_EVENT)) + geom_point()
+
+
+
 
 make Q2
 
@@ -210,6 +171,7 @@ ggplot(A, aes(x = age, fill = DEATH_EVENT)) +geom_histogram()
 ```
 
 t_test
+
 ```{r}
 A |> gf_histogram(~ age, fill = ~ DEATH_EVENT)
 A |> 
@@ -218,19 +180,20 @@ A |>
 mosaic::t_test(age ~ DEATH_EVENT, data = A)
 ```
 
-
 ### 6. Say
 
-Patients who died were older on average (about 65 years) than those who survived (about 59). The difference of roughly 6.5 years is statistically significant (t = -4.19, p= 4.735e-05 (0.00004735), p < 0.001)
+Patients who died were older on average (about 65 years) than those who survived (about 59). The difference of roughly 6.5 years is statistically significant (t = -4.19, p= 4.735e-05 (0.00004735), p \< 0.001)
 
 ### 7. Limit
 
 What this panel cannot do. Which kit table we refused to abuse.
 
+We can see patterns in who died, but we cannot say what caused the deaths or whether these patterns apply to everyone with heart failure.
 
 # Panel B — category / talk
 
 *immigrant × lowincome16, ethnicity × city16. education is years — Quant. Do not average ethnicity.*
+
 ```{r}
 
 glimpse(B)
@@ -241,13 +204,11 @@ glimpse(B)
 skim(B)
 ```
 
-
-
 ### 1. See the table
 
 What is a case? Which columns are Quant / Qual? What is missing?
 
-```r
+``` r
 # glimpse() / inspect() / skim()
 ```
 
@@ -255,14 +216,14 @@ What is a case? Which columns are Quant / Qual? What is missing?
 
 One question *this* table can answer. One it cannot. Write both.
 
-
 1. Were immigrants more likely to grow up in a low-income family?
+Immigrants and low income at 16 (shown through education) 
 2. Does education differ between people who grew up low-income and those who didn't?
-3. Does growing up low-income relate to how many kids someone has later? (Main Character Question)
-4.  Do people with more years of education have fewer kids?
-5.  Do immigrants have a different number of kids than non-immigrants?
-6. Do people who experienced low income at age 16 have fewer years of education?
-7.  How many years of education do people in the dataset have?
+Education and low income at 16
+3. Does growing up low-income relate to number of kids? (Main Character)
+4. Do people with more education have fewer kids?
+5. Do immigrants have a different number of kids? 
+6. How many years of education do people have?
 
 Test
 
@@ -273,12 +234,12 @@ vcd::structable(kids ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
 
 
 ```
+
+
 ```{r}
 
  mosaic::xchisq.test(kids~ immigrant, data = B)
 ```
-
-
 
 
 ### 3. Choose a mark
@@ -293,14 +254,70 @@ What do we think we will see? One sentence, before Run.
 
 Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
 
-```r
-# human chunk
+These first few charts are what I want to check out. I may/will not have these charts in the final rendered Quarto, but want to comment on findings if needed. If any chart is surprising, it stays. 
+We have decided on choosing graph 2 as our final graph and therefore we did the t-test for it as well.
 
-# ## Prompt we actually used
-# ai_draft
-# ours
+
+1.
+{r}
+B |> gf_bar(~ immigrant, fill = ~ lowincome16, position = "fill") |> gf_labs(title = "Share who grew up low-income, by immigrant status", x = "Immigrant", y = "Proportion", fill = "Low income at 16")
+
+{r}
+vcd::structable( lowincome16 ~ immigrant, data=B) |> vcd:: mosaic()
+vcd::structable(lowincome16 ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
+mosaic::xchisq.test(lowincome16~ immigrant, data = B)
+
+
+2. 
+{r}
+B |>
+  group_by(lowincome16) |>
+  summarize(mean_edu = mean(education)) |>
+  gf_col(mean_edu ~ lowincome16, fill = ~ lowincome16) |>
+  gf_labs(title = "Average years of education by low income at 16",
+          x = "Low income at 16", y = "Mean years of education")
+
+3.
+{r}
+ggplot(B, aes(x = kids, fill = lowincome16)) +
+  geom_bar(position = "dodge")
+
+
+4.
+{r}
+ggplot(B, aes(x = education, fill = factor(kids))) +
+  geom_bar()
+
+
+5.
+{r}
+ggplot(B, aes(x = kids, fill = immigrant)) +
+  geom_bar(position = "dodge")
+
+{r}
+vcd::structable(kids ~ immigrant, data=B) |> vcd:: mosaic()
+
+{r}
+vcd::structable(kids ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
+mosaic::xchisq.test(kids~ immigrant, data = B)
+
+
+6. 
+{r}
+ggplot(B, aes(x = education)) +
+  geom_bar()
+
+make
+```{r}
+B |> gf_bar(~ immigrant, fill = ~ lowincome16, position = "fill") |> gf_labs(title = "Share who grew up low-income, by immigrant status", x = "Immigrant", y = "Proportion", fill = "Low income at 16")
 ```
 
+mosaic 
+```{r}
+vcd::structable( lowincome16 ~ immigrant, data=B) |> vcd:: mosaic()
+vcd::structable(lowincome16 ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
+mosaic::xchisq.test(lowincome16~ immigrant, data = B)
+```
 ### 6. Say
 
 Caption + one sentence we will stand behind. Title is a sentence, not a column name.
@@ -309,20 +326,18 @@ Caption + one sentence we will stand behind. Title is a sentence, not a column n
 
 What this panel cannot do. Which kit table we refused to abuse.
 
-
 # Panel C — place
 
 *Asia-only lifeExp / gdpPercap / pop. Join to rnaturalearth; unmatched names are a brick.*
 
 Geometry is not in the CSV. Join in R, then use the same seven headings.
 
-```r
+``` r
 # library(sf)
 # library(rnaturalearth)
 # world <- ne_countries(scale = "medium", returnclass = "sf")
 # # join on country name; list the unmatched labels
 ```
-
 
 ### 1. See the table
 
@@ -349,7 +364,7 @@ What do we think we will see? One sentence, before Run.
 
 Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
 
-```r
+``` r
 # human chunk
 
 # ## Prompt we actually used
@@ -365,7 +380,6 @@ Caption + one sentence we will stand behind. Title is a sentence, not a column n
 
 What this panel cannot do. Which kit table we refused to abuse.
 
-
 # Conclusion
 
 What the spine looks like after three panels.
@@ -376,12 +390,12 @@ What the spine looks like after three panels.
 - Limits: sample, missingness, the test we did not run
 - Gift for the steal-this strip (palette, annotation, join trick)
 
-```r
+``` r
 # sessionInfo()
 ```
-```r
-ponel-A.csv -> read -> save it in my memory so I can chart it. 
 
+``` r
+ponel-A.csv -> read -> save it in my memory so I can chart it. 
 ```
 
 ```{r}
@@ -390,13 +404,10 @@ library(tidyverse)
 
 ```
 
-
-
 ```{r}
 myPanelAData <- read_csv(file = "data/panel-A.csv")
 
 ```
-
 
 ```{r}
 diamonds |> 
@@ -410,13 +421,11 @@ geom_point()
 ```
 
 "install.packages"
+
 ```{r}
 installed.packages("vcd")
 ```
+
 ```{r}
 library(vcd)
 ```
- 
-
-
-
