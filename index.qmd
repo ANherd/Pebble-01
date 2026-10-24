@@ -821,11 +821,11 @@ leaflet() %>%
 
   # PG&E gas compressor station
   addAwesomeMarkers(
-    lng = -117.164512,
-    lat = 34.932745,
-    icon = factory_icon,
-    popup = "PG&E Hinkley Gas Compressor Station"
-  ) %>%
+  lng = -117.1622006,
+  lat = 34.9035573,
+  icon = factory_icon,
+  popup = "PG&E Hinkley Gas Compressor Station"
+) %>%
 
   # Center the map on Hinkley, California
   setView(
