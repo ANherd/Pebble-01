@@ -8,6 +8,8 @@ format:
     toc-depth: 2
 ---
 
+{{< include _setup.qmd >}}
+
 # Spine
 
 > Who dies after heart failure, who grew up poor in the GSS, and where in Asia is life short?
@@ -36,12 +38,14 @@ library(skimr)
 A <- read_csv("data/panel-A.csv")
 B <- read_csv("data/panel-B.csv")
 C <- read_csv("data/panel-C.csv")
+D <- read_csv("data/panel-D.csv")
 glimpse(A)
 ```
 
 Found tables train the mark. A campus Free Hunch, if we collect one, is a **made** panel of the same pair type — new people, old grammar. It does not replace A, B, or C.
 
-# Panel A — body / measure
+# Panel A — body / measure 
+Team : Anmol and Ishita
 
 *ejection_fraction, serum_creatinine, age are Quant. DEATH_EVENT, diabetes, smoking are Quals.*
 
@@ -56,7 +60,23 @@ library(mosaic)
 A <- read_csv("data/panel-A.csv")
 B <- read_csv("data/panel-B.csv")
 C <- read_csv("data/panel-C.csv")
+D <- read_csv("data/panel-D.csv")
 glimpse(A)
+```
+
+```{r}
+
+library(tidyverse)
+
+library(sf)
+
+library(leaflet)
+
+library(leaflet.providers)
+
+library(leaflet.extras)
+
+library(osmdata)
 ```
 
 ```{r}
@@ -98,9 +118,9 @@ Possibly can answer:
 
 Possibly cannot answer:
 
-1. Does getting older cause death in heart failure patients? (The data does not show that one causes the other)
+1.  Does getting older cause death in heart failure patients? (The data does not show that one causes the other)
 
-2. What happened to patients after the study ended? (we don't know about later outcomes.)
+2.  What happened to patients after the study ended? (we don't know about later outcomes.)
 
 T_test
 
@@ -126,48 +146,99 @@ What do we think we will see? One sentence, before Run.
 
 These first few charts are what I want to check out. I may/will not have these charts in the final rendered Quarto, but want to comment on findings if needed. If any chart is surprising, it stays.
 
-1.  {r} ggplot(A, aes(x = sex , fill = sex)) + geom_bar()
+1.  
 
+```{r}
+#| eval: false
+#| echo: true
+ ggplot(A, aes(x = sex , fill = sex)) + geom_bar()
+```
 
+2.  
 
-2.  {r} ggplot(A, aes(x = age)) + geom_histogram() ggplot(A, aes(x = age, fill = DEATH_EVENT)) +geom_histogram()
+```{r}
+#| eval: false
+#| echo: true
+ ggplot(A, aes(x = age)) + geom_histogram() ggplot(A, aes(x = age, fill = DEATH_EVENT)) +geom_histogram()
+```
 
 t_test
 
-{r} A \|\> gf_histogram(\~ age, fill = \~ DEATH_EVENT) A \|\> group_by(DEATH_EVENT) \|\> summarize(mean_age = mean(age, na.rm = TRUE)) mosaic::t_test(age \~ DEATH_EVENT, data = A)
+```{r}
+#| eval: false
+#| echo: true
+A \|\> gf_histogram(\~ age, fill = \~ DEATH_EVENT) A \|\> group_by(DEATH_EVENT) \|\> summarize(mean_age = mean(age, na.rm = TRUE)) mosaic::t_test(age \~ DEATH_EVENT, data = A)
+```
 
+3.  
 
-
-3.  {r} A \|\> ggplot(aes(x = age)) + geom_histogram() A \|\> ggplot(aes(x = age, fill = high_blood_pressure)) + geom_histogram()
+```{r}
+#| eval: false
+#| echo: true
+A \|\> ggplot(aes(x = age)) + geom_histogram() A \|\> ggplot(aes(x = age, fill = high_blood_pressure)) + geom_histogram()
+```
 
 t_test
 
-{r} A \|\> gf_histogram(\~ age, fill = \~ high_blood_pressure) A \|\> group_by(high_blood_pressure) \|\> summarize(mean_age = mean(age, na.rm = TRUE)) mosaic::t_test(age \~ high_blood_pressure, data = A)
+```{r}
+#| eval: false
+#| echo: true
+A \|\> gf_histogram(\~ age, fill = \~ high_blood_pressure) A \|\> group_by(high_blood_pressure) \|\> summarize(mean_age = mean(age, na.rm = TRUE)) mosaic::t_test(age \~ high_blood_pressure, data = A)
+```
 
+4.  
 
-4.  {r} ggplot(A, aes(x = anaemia)) +geom_bar() ggplot(A, aes(x = anaemia, fill = DEATH_EVENT)) +geom_bar()
+```{r}
+#| eval: false
+#| echo: true
+ ggplot(A, aes(x = anaemia)) +geom_bar() ggplot(A, aes(x = anaemia, fill = DEATH_EVENT)) +geom_bar()
+```
 
+5.  
 
-5.  {r} ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium)) +geom_boxplot() ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium, fill = DEATH_EVENT)) +geom_boxplot()
+```{r}
+#| eval: false
+#| echo: true
+ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium)) +geom_boxplot() ggplot(A, aes(x = DEATH_EVENT, y = serum_sodium, fill = DEATH_EVENT)) +geom_boxplot()
+```
 
+6.  
 
-6.  {r} ggplot(A, aes(x = time)) + geom_histogram()
+```{r}
+#| eval: false
+#| echo: true
+ggplot(A, aes(x = time)) + geom_histogram()
+```
 
+7.  
 
-7.  {r} A \|\> ggplot(aes(x = high_blood_pressure, y = age)) + geom_boxplot()
+```{r}
+#| eval: false
+#| echo: true
+A \|\> ggplot(aes(x = high_blood_pressure, y = age)) + geom_boxplot()
+```
 
+8.  
 
-
-8.  {r} A \|\> ggplot(aes(x = ejection_fraction, y = time)) +geom_point() A \|\> ggplot(aes(x = ejection_fraction, y = time, color = DEATH_EVENT)) + geom_point()
-
-
-
+```{r}
+#| eval: false
+#| echo: true
+ A \|\> ggplot(aes(x = ejection_fraction, y = time)) +geom_point() A \|\> ggplot(aes(x = ejection_fraction, y = time, color = DEATH_EVENT)) + geom_point()
+```
 
 make Q2
 
 ```{r}
-ggplot(A, aes(x = age)) + geom_histogram()
-ggplot(A, aes(x = age, fill = DEATH_EVENT)) +geom_histogram()
+gf_histogram(~ age, data = A, fill = ~ DEATH_EVENT) +
+  labs(
+    title = "Age Distribution by Survival Outcome",
+    subtitle = "Comparing ages by death outcome",
+    caption = "Age distribution of patients by survival outcome.",
+    x = "Age (years)",
+    y = "Number of patients",
+    fill = "Death event"
+  )
+
 ```
 
 t_test
@@ -191,6 +262,8 @@ What this panel cannot do. Which kit table we refused to abuse.
 We can see patterns in who died, but we cannot say what caused the deaths or whether these patterns apply to everyone with heart failure.
 
 # Panel B — category / talk
+
+Team : Anmol and Ishita
 
 *immigrant × lowincome16, ethnicity × city16. education is years — Quant. Do not average ethnicity.*
 
@@ -216,14 +289,14 @@ What is a case? Which columns are Quant / Qual? What is missing?
 
 One question *this* table can answer. One it cannot. Write both.
 
-1. Were immigrants more likely to grow up in a low-income family?
-Immigrants and low income at 16 (shown through education) 
-2. Does education differ between people who grew up low-income and those who didn't?
-Education and low income at 16
-3. Does growing up low-income relate to number of kids? (Main Character)
-4. Do people with more education have fewer kids?
-5. Do immigrants have a different number of kids? 
-6. How many years of education do people have?
+Possibly can answer:
+
+1.  Were immigrants more likely to grow up in a low-income family? Immigrants and low income at 16 (shown through education)
+2.  Does education differ between people who grew up low-income and those who didn't? Education and low income at 16
+3.  Does growing up low-income relate to number of kids? (Main Character)
+4.  Do people with more education have fewer kids?
+5.  Do immigrants have a different number of kids?
+6.  How many years of education do people have?
 
 Test
 
@@ -235,12 +308,11 @@ vcd::structable(kids ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
 
 ```
 
-
 ```{r}
-
+#| eval: false
+#| echo: true
  mosaic::xchisq.test(kids~ immigrant, data = B)
 ```
-
 
 ### 3. Choose a mark
 
@@ -254,70 +326,111 @@ What do we think we will see? One sentence, before Run.
 
 Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
 
-These first few charts are what I want to check out. I may/will not have these charts in the final rendered Quarto, but want to comment on findings if needed. If any chart is surprising, it stays. 
-We have decided on choosing graph 2 as our final graph and therefore we did the t-test for it as well.
+These first few charts are what I want to check out. I may/will not have these charts in the final rendered Quarto, but want to comment on findings if needed. If any chart is surprising, it stays. We have decided on choosing graph 2 as our final graph and therefore we did the t-test for it as well.
+
+1.  
+
+```{r}
+#| eval: false
+#| echo: true
+ B \|\> gf_bar(\~ immigrant, fill = \~ lowincome16, position = "fill") \|\> gf_labs(title = "Share who grew up low-income, by immigrant status", x = "Immigrant", y = "Proportion", fill = "Low income at 16")
+
+```
+
+```{r}
+#| eval: false
+#| echo: true
+vcd::structable( lowincome16 \~ immigrant, data=B) \|\> vcd:: mosaic() vcd::structable(lowincome16 \~ immigrant, data = B) \|\> vcd::mosaic(type = "expected") mosaic::xchisq.test(lowincome16\~ immigrant, data = B)
+
+```
+
+2.  
+
+```{r}
+#| eval: false
+#| echo: true
+ B \|\> group_by(lowincome16) \|\> summarize(mean_edu = mean(education)) \|\> gf_col(mean_edu \~ lowincome16, fill = \~ lowincome16) \|\> gf_labs(title = "Average years of education by low income at 16", x = "Low income at 16", y = "Mean years of education")
+
+```
+
+3.  
+
+```{r}
+#| eval: false
+#| echo: true
+ggplot(B, aes(x = kids, fill = lowincome16)) + geom_bar(position = "dodge")
+
+```
+
+4.  
+
+```{r}
+#| eval: false
+#| echo: true
+ggplot(B, aes(x = education, fill = factor(kids))) + geom_bar()
+
+```
+
+5.  
+
+```{r}
+#| eval: false
+#| echo: true
+ ggplot(B, aes(x = kids, fill = immigrant)) + geom_bar(position = "dodge")
 
 
-1.
-{r}
-B |> gf_bar(~ immigrant, fill = ~ lowincome16, position = "fill") |> gf_labs(title = "Share who grew up low-income, by immigrant status", x = "Immigrant", y = "Proportion", fill = "Low income at 16")
+```
 
-{r}
-vcd::structable( lowincome16 ~ immigrant, data=B) |> vcd:: mosaic()
-vcd::structable(lowincome16 ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
-mosaic::xchisq.test(lowincome16~ immigrant, data = B)
+```{r}
+#| eval: false
+#| echo: true
+ vcd::structable(kids \~ immigrant, data=B) \|\> vcd:: mosaic()
+```
 
+```{r}
+#| eval: false
+#| echo: true
+ vcd::structable(kids \~ immigrant, data = B) \|\> vcd::mosaic(type = "expected") mosaic::xchisq.test(kids\~ immigrant, data = B)
+```
 
-2. 
-{r}
-B |>
-  group_by(lowincome16) |>
-  summarize(mean_edu = mean(education)) |>
-  gf_col(mean_edu ~ lowincome16, fill = ~ lowincome16) |>
-  gf_labs(title = "Average years of education by low income at 16",
-          x = "Low income at 16", y = "Mean years of education")
+6.  
 
-3.
-{r}
-ggplot(B, aes(x = kids, fill = lowincome16)) +
-  geom_bar(position = "dodge")
+```{r}
+#| eval: false
+#| echo: true
+ ggplot(B, aes(x = education)) + geom_bar()
 
-
-4.
-{r}
-ggplot(B, aes(x = education, fill = factor(kids))) +
-  geom_bar()
-
-
-5.
-{r}
-ggplot(B, aes(x = kids, fill = immigrant)) +
-  geom_bar(position = "dodge")
-
-{r}
-vcd::structable(kids ~ immigrant, data=B) |> vcd:: mosaic()
-
-{r}
-vcd::structable(kids ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
-mosaic::xchisq.test(kids~ immigrant, data = B)
-
-
-6. 
-{r}
-ggplot(B, aes(x = education)) +
-  geom_bar()
+```
 
 make
+
+Q1
+
 ```{r}
-B |> gf_bar(~ immigrant, fill = ~ lowincome16, position = "fill") |> gf_labs(title = "Share who grew up low-income, by immigrant status", x = "Immigrant", y = "Proportion", fill = "Low income at 16")
+gf_bar(
+  ~ immigrant,
+  data = B,
+  fill = ~ lowincome16,
+  position = "fill"
+) +
+  labs(
+    title = "Immigration Status and Childhood Income",
+    subtitle = "Comparing childhood income backgrounds",
+    caption = "Proportion of respondents by immigration status and low-income background at age 16.",
+    x = "Immigration status",
+    y = "Proportion of respondents",
+    fill = "Low income at age 16"
+  )
 ```
 
-mosaic 
+mosaic
+
 ```{r}
 vcd::structable( lowincome16 ~ immigrant, data=B) |> vcd:: mosaic()
 vcd::structable(lowincome16 ~ immigrant, data = B) |> vcd::mosaic(type = "expected")
 mosaic::xchisq.test(lowincome16~ immigrant, data = B)
 ```
+
 ### 6. Say
 
 Caption + one sentence we will stand behind. Title is a sentence, not a column name.
@@ -328,16 +441,9 @@ What this panel cannot do. Which kit table we refused to abuse.
 
 # Panel C — place
 
+Team : Anmol, Shivgun, and Sadiyah
+
 *Asia-only lifeExp / gdpPercap / pop. Join to rnaturalearth; unmatched names are a brick.*
-
-Geometry is not in the CSV. Join in R, then use the same seven headings.
-
-``` r
-# library(sf)
-# library(rnaturalearth)
-# world <- ne_countries(scale = "medium", returnclass = "sf")
-# # join on country name; list the unmatched labels
-```
 
 ### 1. See the table
 
@@ -345,16 +451,72 @@ What is a case? Which columns are Quant / Qual? What is missing?
 
 ```{r}
 # glimpse() / inspect() / skim()
-glimpse (A)
+glimpse (C)
+```
+
+```{r}
+skim(C)
+```
+```{r}
+library(sf)
+library(rnaturalearth)
+library(dplyr)
+
+world <- rnaturalearth::ne_countries(
+  scale = "medium",
+  returnclass = "sf"
+)
+
+world_C <- world |>
+  left_join(C, by = c("name" = "country"))
+```
+
+```{r}
+library(ggformula)
+library(ggplot2)
+library(dplyr)
+library(maps)
+
+world_map <- map_data("world")
+
+world_map_C <- world_map %>%
+  left_join(
+    world_C %>% sf::st_drop_geometry(),
+    by = c("region" = "name")
+  )
 ```
 
 ### 2. Ask
 
 One question *this* table can answer. One it cannot. Write both.
 
+Possibly can answer:
+
+1.  Which continents have the highest GDP per capita?
+
+2.  Which continents have the largest total populations?
+
+3.  Does life expectancy vary across continents?
+
+4.  How do countries around the world differ in life expectancy, population, and GDP per capita in 2007?
+
+5.  Is higher GDP per capita associated with higher life expectancy?
+
+6.  Do countries with larger populations tend to have lower life expectancy?
+
+Possibly cannot answer:
+
+1.  Has GDP per capita changed over the years?  
+
+2.  Has life expectancy improved over the years?
+
+3.  Does having a higher GDP per capita cause people to live longer?
+
 ### 3. Choose a mark
 
 Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+box plot ,scatter plot,
 
 ### 4. Predict
 
@@ -364,18 +526,203 @@ What do we think we will see? One sentence, before Run.
 
 Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
 
-``` r
-# human chunk
+Possibly can answer:
 
-# ## Prompt we actually used
-# ai_draft
-# ours
+Q1.
+
+```{r}
+#| eval: false
+#| echo: true
+
+gf_boxplot(gdpPercap ~ continent, data = C)
+
 ```
+
+Q2.
+
+```{r}
+#| eval: false
+#| echo: true
+ C_pop <- C |>
+  group_by(continent) |>
+  summarise(total_pop = sum(pop, na.rm = TRUE))
+
+gf_boxplot(total_pop ~ continent, data = C_pop)
+
+```
+
+Q3.
+
+```{r}
+#| eval: false
+#| echo: true
+ gf_boxplot(lifeExp ~ continent, data = C)
+
+```
+
+Q4.
+
+a)
+
+```{r}
+#| eval: false
+#| echo: true
+gf_polygon(
+  lat ~ long,
+  data = world_map_C,
+  group = ~group,
+  fill = ~lifeExp
+) +
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "Life Expectancy Around the World",
+    subtitle = "Comparing life expectancy across countries in 2007",
+    caption = "Source: Panel C dataset, 2007.",
+    fill = "Life expectancy (years)"
+  ) +
+  theme_minimal()
+```
+
+b)
+
+```{r}
+#| eval: false
+#| echo: true
+gf_polygon(
+  lat ~ long,
+  data = world_map_C,
+  group = ~group,
+  fill = ~log10(pop)
+) +
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "Population Around the World",
+    subtitle = "Comparing country populations in 2007",
+    caption = "Source: Panel C dataset, 2007.",
+    fill = "Population (log10 scale)"
+  ) +
+  theme_minimal()
+```
+
+c)
+
+```{r}
+#| eval: false
+#| echo: true
+gf_polygon(
+  lat ~ long,
+  data = world_map_C,
+  group = ~group,
+  fill = ~gdpPercap
+) +
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "GDP per Capita Around the World",
+    subtitle = "Comparing GDP per person across countries in 2007",
+    caption = "Source: Panel C dataset, 2007.",
+    fill = "GDP per capita"
+  ) +
+  theme_minimal()
+```
+
+Q5.
+
+```{r}
+#| eval: false
+#| echo: true
+gf_point(lifeExp ~ gdpPercap, data = C)
+
+```
+
+Q6.
+
+```{r}
+#| eval: false
+#| echo: true
+world_points <- world_C |>
+  filter(!is.na(pop), !is.na(lifeExp)) |>
+  sf::st_transform(4326) |>
+  sf::st_centroid()
+
+ggplot() +
+  geom_sf(data = world_C, fill = "grey95") +
+  geom_sf(
+    data = world_points,
+    aes(size = pop, color = lifeExp),
+    alpha = 0.85
+  ) +
+  scale_size_area(max_size = 10) +
+  scale_color_viridis_c() +
+  labs(
+    title = "Population and Life Expectancy",
+    size = "Population",
+    color = "Life expectancy (years)"
+  ) +
+  theme_minimal()
+
+```
+
+Q4. make
+
+```{r}
+gf_polygon(
+  lat ~ long,
+  data = world_map_C,
+  group = ~group,
+  fill = ~lifeExp
+) +
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "Life Expectancy Around the World",
+    subtitle = "Comparing life expectancy across countries in 2007",
+    caption = "Source: Panel C dataset, 2007.",
+    fill = "Life expectancy (years)"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+gf_polygon(
+  lat ~ long,
+  data = world_map_C,
+  group = ~group,
+  fill = ~log10(pop)
+) +
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "Population Around the World",
+    subtitle = "Comparing country populations in 2007",
+    caption = "Source: Panel C dataset, 2007.",
+    fill = "Population (log10 scale)"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+gf_polygon(
+  lat ~ long,
+  data = world_map_C,
+  group = ~group,
+  fill = ~gdpPercap
+) +
+  scale_fill_viridis_c(na.value = "grey85") +
+  labs(
+    title = "GDP per Capita Around the World",
+    subtitle = "Comparing GDP per person across countries in 2007",
+    caption = "Source: Panel C dataset, 2007.",
+    fill = "GDP per capita"
+  ) +
+  theme_minimal()
+```
+
+
+
 
 ### 6. Say
 
 Caption + one sentence we will stand behind. Title is a sentence, not a column name.
-
+ 
+ 
 ### 7. Limit
 
 What this panel cannot do. Which kit table we refused to abuse.
@@ -390,42 +737,105 @@ What the spine looks like after three panels.
 - Limits: sample, missingness, the test we did not run
 - Gift for the steal-this strip (palette, annotation, join trick)
 
-``` r
-# sessionInfo()
-```
+# Panel D — The Hinkley Case
 
-``` r
-ponel-A.csv -> read -> save it in my memory so I can chart it. 
-```
+Team : Individual
 
-```{r}
-#| message: true
-library(tidyverse) 
+### Based on the movie Erin Brokovich
 
-```
+### Setting up
 
 ```{r}
-myPanelAData <- read_csv(file = "data/panel-A.csv")
-
+library(tidyverse)
+library(ggplot2)
+library(ggformula)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(viridis)
+library(leaflet)
+library(leaflet.providers)
+library(leaflet.extras)
 ```
+
 
 ```{r}
-diamonds |> 
 
-ggplot(
+library(leaflet)
+library(magrittr)
 
-aes(x = carat, y = price, color = cut, shape = cut))+
+# 1. Create the factory icon
+factory_icon <- awesomeIcons(
+  icon = "industry",
+  library = "fa",
+  markerColor = "red",
+  iconColor = "white"
+)
 
-geom_point()
-  
+# 2. Build the interactive map
+leaflet() %>%
+  addTiles() %>%
+
+  # Approximate groundwater contamination plume
+  addPolygons(
+    lng = c(
+      -117.24, -117.22, -117.19, -117.16,
+      -117.14, -117.15, -117.18, -117.21,
+      -117.24
+    ),
+    lat = c(
+      34.96, 34.97, 34.965, 34.95,
+      34.93, 34.91, 34.90, 34.91,
+      34.96
+    ),
+    fillColor = "blue",
+    fillOpacity = 0.35,
+    color = "darkblue",
+    weight = 2,
+    popup = "Approximate Groundwater Contamination Plume"
+  ) %>%
+
+  # Five families connected to the case
+  addCircleMarkers(
+    lng = c(
+      -117.205, -117.215, -117.190,
+      -117.225, -117.175
+    ),
+    lat = c(
+      34.925, 34.940, 34.915,
+      34.935, 34.945
+    ),
+    radius = 7,
+    color = "darkgreen",
+    fillColor = "green",
+    fillOpacity = 0.9,
+    weight = 2,
+    popup = c(
+      "Walker Family",
+      "Harper Family",
+      "Banks Family",
+      "Park Family",
+      "Killian Family"
+    )
+  ) %>%
+
+  # PG&E gas compressor station
+  addAwesomeMarkers(
+    lng = -117.164512,
+    lat = 34.932745,
+    icon = factory_icon,
+    popup = "PG&E Hinkley Gas Compressor Station"
+  ) %>%
+
+  # Center the map on Hinkley, California
+  setView(
+    lng = -117.20,
+    lat = 34.93,
+    zoom = 12
+  )
 ```
 
-"install.packages"
 
-```{r}
-installed.packages("vcd")
-```
 
-```{r}
-library(vcd)
-```
+
+
