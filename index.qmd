@@ -753,23 +753,26 @@ The USA and Russia are among the largest economies in the world, and the DRC is 
 
 # Conclusion
 
-What the spine looks like after three panels.
+What the spine looks like after three panels
 
-Bodies, habits and wealth follow patterns, and those patterns are rarely random or fair.
+Age, childhood income, and economic conditions show patterns in health, education, and life expectancy. However, these patterns do not tell the whole story.
 
-What we will not claim:
+What we will not claim
 
-That correlation is causation, heavier students are not necessarily less active because of their weight. That missing countries in Panel C do not matter, they do. That 2007 GDP or life expectancy data reflects the world today.
+Correlation does not prove causation. Age alone does not explain heart failure deaths, childhood income is not the only factor influencing education, and higher GDP per capita does not automatically mean longer life expectancy.
 
-Which lines were human, which were machine:
+Which lines were human, which were machine
 
-Human: the questions, the observations, the Say sections, the choice of variables, the story
+Human: Choosing the questions, interpreting the graphs, and drawing conclusions.
 
-Machine: debugging syntax errors, fixing missing brackets.
+Machine: Helping with code, debugging errors, and creating graphs and maps.
 
-Limits:
+Limits
 
-PanelA and B have significant missing data in height and weight. Panel C is missing Russia, USA and DRC.
+Panel A represents a specific group of heart failure patients. Panel B is limited by the variables and responses available in the dataset. Panel C uses data from 2007, and missing countries limit the map comparisons.
+
+Overall, these panels show how data can reveal patterns, but we must interpret those patterns carefully and acknowledge what the data cannot explain.
+
 
 # Panel D — The Hinkley Case
 
