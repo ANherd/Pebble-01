@@ -749,7 +749,10 @@ Russia, the USA and the Democratic Republic of Congo are missing from the map.
 
 The USA and Russia are among the largest economies in the world, and the DRC is one of the most populous nations in Africa. Their presence could meaningfully shift the story these maps are telling.
 
-Conclusion
+
+
+# Conclusion
+
 What the spine looks like after three panels.
 
 Bodies, habits and wealth follow patterns, and those patterns are rarely random or fair.
@@ -767,16 +770,6 @@ Machine: debugging syntax errors, fixing missing brackets.
 Limits:
 
 PanelA and B have significant missing data in height and weight. Panel C is missing Russia, USA and DRC.
-
-# Conclusion
-
-What the spine looks like after three panels.
-
-- The question we will defend in ninety seconds
-- What we will **not** claim
-- Which lines were human, which were machine
-- Limits: sample, missingness, the test we did not run
-- Gift for the steal-this strip (palette, annotation, join trick)
 
 # Panel D — The Hinkley Case
 
@@ -874,3 +867,5 @@ leaflet() %>%
     zoom = 12
   )
 ```
+
+
