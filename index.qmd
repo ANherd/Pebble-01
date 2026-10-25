@@ -44,7 +44,8 @@ glimpse(A)
 
 Found tables train the mark. A campus Free Hunch, if we collect one, is a **made** panel of the same pair type — new people, old grammar. It does not replace A, B, or C.
 
-# Panel A — body / measure 
+# Panel A — body / measure
+
 Team : Anmol and Ishita
 
 *ejection_fraction, serum_creatinine, age are Quant. DEATH_EVENT, diabetes, smoking are Quals.*
@@ -457,6 +458,7 @@ glimpse (C)
 ```{r}
 skim(C)
 ```
+
 ```{r}
 library(sf)
 library(rnaturalearth)
@@ -506,7 +508,7 @@ Possibly can answer:
 
 Possibly cannot answer:
 
-1.  Has GDP per capita changed over the years?  
+1.  Has GDP per capita changed over the years?
 
 2.  Has life expectancy improved over the years?
 
@@ -562,7 +564,7 @@ Q3.
 
 Q4.
 
-a)
+a)  
 
 ```{r}
 #| eval: false
@@ -583,7 +585,7 @@ gf_polygon(
   theme_minimal()
 ```
 
-b)
+b)  
 
 ```{r}
 #| eval: false
@@ -604,7 +606,7 @@ gf_polygon(
   theme_minimal()
 ```
 
-c)
+c)  
 
 ```{r}
 #| eval: false
@@ -715,17 +717,56 @@ gf_polygon(
   theme_minimal()
 ```
 
-
-
-
 ### 6. Say
 
 Caption + one sentence we will stand behind. Title is a sentence, not a column name.
- 
- 
+
+Life Expectancy
+
+Sub-Saharan Africa trails the world in life expectancy
+
+The dark purple cluster across central and southern Africa stands out starkly against the yellow-green of Europe, North America and Australia, where people live well into their 80s.
+
+Population
+
+China and India are in a population category of their own
+
+China and India stand out as clear outliers, they burn so bright on the map, every other country fades into the dark.
+
+GDP per capita
+
+North America, Europe and Australia lead in GDP per capita while Africa and South Asia lag far behind
+
+North America, Western Europe and Australia glow green against a largely dark purple map, with Africa and South Asia showing the lowest GDP per capita by a wide margin.
+
+The pattern across all three maps tells the same story: the countries with the highest GDP per capita also live the longest.
+
 ### 7. Limit
 
 What this panel cannot do. Which kit table we refused to abuse.
+
+Russia, the USA and the Democratic Republic of Congo are missing from the map.
+
+The USA and Russia are among the largest economies in the world, and the DRC is one of the most populous nations in Africa. Their presence could meaningfully shift the story these maps are telling.
+
+Conclusion
+What the spine looks like after three panels.
+
+Bodies, habits and wealth follow patterns, and those patterns are rarely random or fair.
+
+What we will not claim:
+
+That correlation is causation, heavier students are not necessarily less active because of their weight. That missing countries in Panel C do not matter, they do. That 2007 GDP or life expectancy data reflects the world today.
+
+Which lines were human, which were machine:
+
+Human: the questions, the observations, the Say sections, the choice of variables, the story
+
+Machine: debugging syntax errors, fixing missing brackets.
+
+Limits:
+
+PanelA and B have significant missing data in height and weight. Panel C is missing Russia, USA and DRC.
 
 # Conclusion
 
@@ -757,7 +798,6 @@ library(leaflet)
 library(leaflet.providers)
 library(leaflet.extras)
 ```
-
 
 ```{r}
 
@@ -834,8 +874,3 @@ leaflet() %>%
     zoom = 12
   )
 ```
-
-
-
-
-

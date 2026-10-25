@@ -458,7 +458,7 @@ $ DEATH_EVENT              &lt;chr&gt; "yes", "yes", "yes", "yes", "yes", "yes",
 <span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Data (c) OpenStreetMap contributors, ODbL 1.0. https://www.openstreetmap.org/copyright
-connected to: https://maps.mail.ru/osm/tools/overpass/api/interpreter</code></pre>
+connected to: https://overpass-api.de/api/interpreter</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -1755,10 +1755,31 @@ Attaching package: 'maps'</code></pre>
 <section id="say-2" class="level3">
 <h3 class="anchored" data-anchor-id="say-2">6. Say</h3>
 <p>Caption + one sentence we will stand behind. Title is a sentence, not a column name.</p>
+<p>Life Expectancy</p>
+<p>Sub-Saharan Africa trails the world in life expectancy</p>
+<p>The dark purple cluster across central and southern Africa stands out starkly against the yellow-green of Europe, North America and Australia, where people live well into their 80s.</p>
+<p>Population</p>
+<p>China and India are in a population category of their own</p>
+<p>China and India stand out as clear outliers, they burn so bright on the map, every other country fades into the dark.</p>
+<p>GDP per capita</p>
+<p>North America, Europe and Australia lead in GDP per capita while Africa and South Asia lag far behind</p>
+<p>North America, Western Europe and Australia glow green against a largely dark purple map, with Africa and South Asia showing the lowest GDP per capita by a wide margin.</p>
+<p>The pattern across all three maps tells the same story: the countries with the highest GDP per capita also live the longest.</p>
 </section>
 <section id="limit-2" class="level3">
 <h3 class="anchored" data-anchor-id="limit-2">7. Limit</h3>
 <p>What this panel cannot do. Which kit table we refused to abuse.</p>
+<p>Russia, the USA and the Democratic Republic of Congo are missing from the map.</p>
+<p>The USA and Russia are among the largest economies in the world, and the DRC is one of the most populous nations in Africa. Their presence could meaningfully shift the story these maps are telling.</p>
+<p>Conclusion What the spine looks like after three panels.</p>
+<p>Bodies, habits and wealth follow patterns, and those patterns are rarely random or fair.</p>
+<p>What we will not claim:</p>
+<p>That correlation is causation, heavier students are not necessarily less active because of their weight. That missing countries in Panel C do not matter, they do. That 2007 GDP or life expectancy data reflects the world today.</p>
+<p>Which lines were human, which were machine:</p>
+<p>Human: the questions, the observations, the Say sections, the choice of variables, the story</p>
+<p>Machine: debugging syntax errors, fixing missing brackets.</p>
+<p>Limits:</p>
+<p>PanelA and B have significant missing data in height and weight. Panel C is missing Russia, USA and DRC.</p>
 </section>
 </section>
 <section id="conclusion" class="level1">
@@ -1900,8 +1921,8 @@ Attaching package: 'magrittr'</code></pre>
 <span id="cb121-68"><a href="#cb121-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">zoom =</span> <span class="dv">12</span></span>
 <span id="cb121-69"><a href="#cb121-69" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-7974045c4420c57d325e" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-7974045c4420c57d325e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[-117.24,-117.22,-117.19,-117.16,-117.14,-117.15,-117.18,-117.21,-117.24],"lat":[34.96,34.97,34.965,34.95,34.93,34.91,34.9,34.91,34.96]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"darkblue","weight":2,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.35,"smoothFactor":1,"noClip":false},"Approximate Groundwater Contamination Plume",null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[34.925,34.94,34.915,34.935,34.945],[-117.205,-117.215,-117.19,-117.225,-117.175],7,null,null,{"interactive":true,"className":"","stroke":true,"color":"darkgreen","weight":2,"opacity":0.5,"fill":true,"fillColor":"green","fillOpacity":0.9},null,null,["Walker Family","Harper Family","Banks Family","Park Family","Killian Family"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addAwesomeMarkers","args":[34.9035573,-117.1622006,{"icon":"industry","markerColor":"red","iconColor":"white","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"PG&E Hinkley Gas Compressor Station",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[34.9,34.97],"lng":[-117.24,-117.14]},"setView":[[34.93,-117.2],12,[]]},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-e880f4495f94639e4654" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-e880f4495f94639e4654">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addPolygons","args":[[[[{"lng":[-117.24,-117.22,-117.19,-117.16,-117.14,-117.15,-117.18,-117.21,-117.24],"lat":[34.96,34.97,34.965,34.95,34.93,34.91,34.9,34.91,34.96]}]]],null,null,{"interactive":true,"className":"","stroke":true,"color":"darkblue","weight":2,"opacity":0.5,"fill":true,"fillColor":"blue","fillOpacity":0.35,"smoothFactor":1,"noClip":false},"Approximate Groundwater Contamination Plume",null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addCircleMarkers","args":[[34.925,34.94,34.915,34.935,34.945],[-117.205,-117.215,-117.19,-117.225,-117.175],7,null,null,{"interactive":true,"className":"","stroke":true,"color":"darkgreen","weight":2,"opacity":0.5,"fill":true,"fillColor":"green","fillOpacity":0.9},null,null,["Walker Family","Harper Family","Banks Family","Park Family","Killian Family"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addAwesomeMarkers","args":[34.9035573,-117.1622006,{"icon":"industry","markerColor":"red","iconColor":"white","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"PG&E Hinkley Gas Compressor Station",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[34.9,34.97],"lng":[-117.24,-117.14]},"setView":[[34.93,-117.2],12,[]]},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 
