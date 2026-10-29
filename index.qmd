@@ -23,8 +23,12 @@ This folder is ours for the ten days. Three tables, three shapes.
 - **Panel A** (`panel-A.csv`) — heart-failure clinic file. 0/1 flags have been recoded to yes/no. Quants: age, ejection fraction, serum measures, time.
 - **Panel B** (`panel-B.csv`) — GSS 1974–2002: ethnicity, city at 16, low income at 16, immigrant, plus years of education (Quant).
 - **Panel C** (`panel-C.csv`) — gapminder 2007, **Asia only**. Stand-in for an NFHS / malaria map. India is one country row, not districts.
+- **Panel E** (`panel-E.csv`) - 
 
 C is not a Bangalore street map. If we want feet-on-ground geography, that is a different brick (OSM), not this file.
+
+
+
 
 We load from this folder:
 
@@ -39,6 +43,12 @@ A <- read_csv("data/panel-A.csv")
 B <- read_csv("data/panel-B.csv")
 C <- read_csv("data/panel-C.csv")
 D <- read_csv("data/panel-D.csv")
+hunch_1 <- read_csv("data/panel-hunch_1.csv")
+hunch_2 <- read_csv("data/panel-hunch_2.csv")
+hunch_3 <- read_csv("data/panel-hunch_3.csv")
+hunch_4 <- read_csv("data/panel-hunch_4.csv")
+hunch_5 <- read_csv("data/panel-hunch_5.csv")
+hunch_6 <- read_csv("data/panel-hunch_6.csv")
 glimpse(A)
 ```
 
@@ -62,6 +72,12 @@ A <- read_csv("data/panel-A.csv")
 B <- read_csv("data/panel-B.csv")
 C <- read_csv("data/panel-C.csv")
 D <- read_csv("data/panel-D.csv")
+hunch_1 <- read_csv("data/panel-hunch_1.csv")
+hunch_2 <- read_csv("data/panel-hunch_2.csv")
+hunch_3 <- read_csv("data/panel-hunch_3.csv")
+hunch_4 <- read_csv("data/panel-hunch_4.csv")
+hunch_5 <- read_csv("data/panel-hunch_5.csv")
+hunch_6 <- read_csv("data/panel-hunch_6.csv")
 glimpse(A)
 ```
 
@@ -871,4 +887,577 @@ leaflet() %>%
   )
 ```
 
+
+
+# Panel E- 
+
+
+
+### Setting up
+
+```{r}
+
+library(tidyverse)   
+library(ggformula)  
+library(mosaic)      
+library(broom)        
+library(infer)        
+library(supernova)    
+library(ggstatsplot)  
+library(ggcompare)    
+library(patchwork)    
+library(ggprism)      
+library(paletteer)    
+
+
+```
+
+
+## hunch_1 = Friends vs House vs Modern Family
+
+
+```{r}
+hunch_1 <- hunch_1 |>
+  janitor::clean_names()
+```
+
+```{r}
+names(hunch_1)
+```
+
+```{r}
+hunch_1_mod <- hunch_1 |>
+  mutate(
+    friends = readr::parse_number(friends),
+    house = readr::parse_number(house),
+    modern_family = readr::parse_number(modern_family)
+  ) |>
+  pivot_longer(
+    cols = c(friends, house, modern_family),
+    names_to = "show",
+    values_to = "scores"
+  )
+```
+
+```{r}
+aov(scores ~ show, data = hunch_1_mod) |>
+  supernova::supernova()
+```
+
+
+
+
+
+
+
+
+
+## hunch_1 = Friends vs House vs Modern Family
+
+{r}
+hunch_1_mean <- hunch_1_mod |>
+  group_by(show) |>
+  summarise(
+    mean_score = mean(scores, na.rm = TRUE)
+  )
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+```{r}
+glimpse(hunch_1)  
+
+ skim(hunch_1)
+```
+
+
+``` r
+# glimpse() / inspect() / skim()
+```
+A case is one student who was asked to rate the TV shows.
+
+The Students column is an identifier for each respondent.
+
+Friends, House and Modern Family ratings are quantitative variables because the students rated the shows out of 10.
+
+Missing values (N/A) represent students who had not watched a particular TV show or did not give a rating.
+
+### 2. Ask
+
+Q1 . How do the ratings differ between Friends, House, and Modern Family when each pair of shows is compared?
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+I will use a bar chart to compare the average ratings of the three TV shows. The x-axis will represent the shows, and the y-axis will represent their average ratings. An ANOVA test will help determine whether there is a statistically significant difference between the mean ratings.
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+I predict that the average ratings will differ between the three shows, with one show receiving a higher average rating than the others.
+
+### 5. Make
+
+Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+```{r}
+hunch_1_mean <- hunch_1_mod |>
+  group_by(show) |>
+  summarise(
+    mean_score = mean(scores, na.rm = TRUE)
+  )
+
+gf_col(mean_score ~ show,
+       fill = ~show,
+       data = hunch_1_mean) |>
+  gf_refine(
+    scale_fill_manual(
+      values = c(
+        "friends" = "yellow",
+        "house" = "lightblue",
+        "modern_family" = "pink"
+      )
+    )
+  ) |>
+  gf_labs(
+    title = "Which TV Show Received the Highest Rating?",
+    subtitle = "Average ratings of Friends, House and Modern Family",
+    x = "TV Show",
+    y = "Average Rating",
+    caption = "Ratings collected from students on the MAHE campus."
+  )
+```
+
+
+### 6. Say
+
+Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+
+The bar chart compares the average ratings of the three shows.
+
+Finding to report: The show with the highest average rating is ___, while the show with the lowest average rating is ___. The ANOVA result indicates whether the differences between the mean ratings are statistically significant.
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+The ratings represent only the respondents in our dataset. They cannot establish which show is most popular among the general population. Missing ratings may also affect the comparison because some respondents may not have watched every show. The data cannot explain why respondents prefer one show over another.
+
+## hunch_2 = I Am an INTJ
+
+
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+``` r
+# glimpse() / inspect() / skim()
+```
+```{r}
+
+glimpse(hunch_2)
+
+skim(hunch_2)
+
+```
+
+
+### 2. Ask
+
+Q1 .How are personality types distributed among SMI and MIT students, and what patterns can we find?
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+I will use a horizontal bar chart, separated into SMI and MIT panels, to compare the distribution of MBTI personality types. The bars will represent the number of students, and the panels will separate the two departments.
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+I predict that some personality types will appear more frequently than others and that the distribution may differ between SMI and MIT students.
+
+### 5. Make
+
+Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+
+
+
+```{r}
+hunch_2 |>
+  gf_bar(
+    ~ `mbti-type`,
+    fill = ~ `mbti-type`
+  ) |>
+  gf_facet_wrap(~ department) |>
+  gf_labs(
+    title = "Personality Types Among SMI and MIT Students",
+    subtitle = "Comparing MBTI personality types across departments",
+    x = "Number of Students",
+    y = "MBTI Personality Type",
+    fill = "MBTI Personality Type",
+    caption = "Source: FOSEDA Panel E, Hunch 2 dataset (n = 60)"
+  ) |>
+  gf_refine(coord_flip()) |>
+  gf_theme(theme_minimal(base_size = 12))
+```
+
+
+
+### 6. Say
+
+Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+
+The graph shows how frequently different MBTI personality types appear in the two departments.
+
+Finding to report: The most frequently represented personality type in SMI is ___, while the most frequently represented type in MIT is ___. The distributions appear ___ between the two departments.
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+The dataset only represents the respondents who participated in the survey. It cannot establish that studying in a particular department causes someone to have a specific personality type. The results may not represent all students at SMI or MIT.
+
+## hunch_3 = Allowance
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+``` r
+# glimpse() / inspect() / skim()
+```
+```{r}
+glimpse(hunch_3)  
+
+ skim(hunch_3)
+```
+
+
+### 2. Ask
+
+Q1 . Do male and female respondents receive different allowances?
+
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+I will use a box plot with individual data points to compare allowance amounts between male and female respondents. The box plots will show the distributions, while the points will show individual responses. This will make it easier to identify differences and unusually high or low values.
+
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+I predict that allowance amounts will vary among respondents and that the distribution may differ between male and female students. Some students may receive considerably higher allowances than others.
+
+### 5. Make
+
+Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+
+```{r}
+library(tidyverse)
+library(ggformula)
+
+hunch_3 |>
+  gf_boxplot(
+    allowance ~ gender,
+    fill = ~ gender,
+    alpha = 0.4,
+    width = 0.5
+  ) |>
+  gf_jitter(
+    allowance ~ gender,
+    color = "black",
+    width = 0.12,
+    height = 0,
+    size = 2.5,
+    alpha = 0.8
+  ) |>
+  gf_labs(
+    title = "Do Male and Female Students Receive Different Allowances?",
+    subtitle = "Comparing allowance distributions and individual responses",
+    x = "Gender",
+    y = "Allowance Amount",
+    fill = "Gender",
+    caption = "Source: FOSEDA Panel E, Hunch 3 dataset"
+  ) |>
+  gf_theme(
+    theme_minimal(base_size = 13)
+  )
+```
+
+### 6. Say
+
+Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+
+The box plot compares the distribution of allowance amounts between male and female respondents. The individual points make it possible to see the variation in responses and identify unusually high values.
+
+Finding to report: The median allowance for male respondents is ___, compared with ___ for female respondents. The distributions show ___ between the two groups.
+
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+
+The data cannot explain why students receive different allowance amounts or establish that gender causes these differences. An unusually high value can also stretch the vertical axis and make most other observations appear close together. The findings may not represent students outside the survey.
+
+
+## hunch_4 = Belief in AI: Art vs. Design
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+``` r
+# glimpse() / inspect() / skim()
+
+```
+```{r}
+glimpse(hunch_4)  
+
+ skim(hunch_4)
+```
+
+### 2. Ask
+
+1.Does the relationship between gender and AI belief differ by program?
+
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+I will use grouped bar charts separated into Art and Design panels. The x-axis will represent gender, the y-axis will show the number of respondents, and the bar colors will represent whether respondents believe in AI. This will allow me to compare responses across gender and program.
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+I predict that belief in AI may differ between male and female respondents and that this pattern may also vary between Art and Design students.
+
+### 5. Make
+
+Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+```{r}
+hunch_4 |>
+  gf_bar(
+    ~ gender,
+    fill = ~ AI_belief,
+    position = "dodge"
+  ) |>
+  gf_facet_wrap(~ program) |>
+  gf_labs(
+    title = "How Does AI Belief Vary by Gender and Program?",
+    subtitle = "Comparing responses from art and design students",
+    x = "Gender",
+    y = "Number of Respondents",
+    fill = "Belief in AI",
+    caption = "Source: FOSEDA Panel E, Hunch 4 dataset"
+  ) |>
+  gf_theme(theme_minimal(base_size = 13))
+```
+
+### 6. Say
+
+Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+
+The graph compares Yes and No responses across genders in the Art and Design programs.
+
+Finding to report: The distribution of AI belief appears ___ between male and female respondents in Art, while the pattern in Design appears ___. This suggests that the relationship between gender and AI belief ___ across the two programs.
+
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+The data records the respondents' beliefs but does not explain why those beliefs exist. It cannot establish that gender or academic program causes a particular belief. The findings may not represent all art and design students.
+
+
+## hunch_5 = Some People Find Making Friends Easier
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+``` r
+# glimpse() / inspect() / skim()
+```
+```{r}
+glimpse(hunch_5)  
+
+ skim(hunch_5)
+```
+
+
+### 2. Ask
+
+Q1 . Why do some students find it easier to make friends than others, and what patterns can we discover among SMI and MIT students?
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+I will use a grouped bar chart to compare relationship-status responses between SMI and MIT students. The x-axis will represent relationship status, the y-axis will show the number of respondents, and the colors will represent the department.
+
+Important: The available variables discussed for this dataset are relationship_status and department. These variables can show differences in relationship status, but they do not directly measure how easy students find it to make friends.
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+I predict that the distribution of relationship-status responses may differ between SMI and MIT students.
+
+### 5. Make
+
+Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+```{r}
+hunch_5 <- hunch_5 |>
+  mutate(
+    department = as.factor(department)
+  )
+```
+
+
+```{r}
+
+names(hunch_5)
+```
+
+
+```{r}
+head(hunch_5)
+```
+    0.
+
+```{r}
+library(tidyverse)
+library(ggformula)
+
+hunch_5 |>
+  gf_bar(
+    ~ relationship_status,
+    fill = ~ department,
+    position = "dodge"
+  ) |>
+  gf_labs(
+    title = "Are Students in Relationships?",
+    subtitle = "Comparing SMI and MIT students",
+    x = "Relationship Status",
+    y = "Number of Students",
+    fill = "Department",
+    caption = "Source: FOSEDA Panel E, Hunch 5 dataset"
+  )
+```
+
+
+
+
+### 6. Say
+
+Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+
+The graph compares the number of respondents reporting Yes or No for relationship status across the two departments.
+
+Finding to report: The proportion of respondents reporting that they are in a relationship is ___ at SMI and ___ at MIT. The graph shows ___ between the departments.
+
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+The dataset records relationship status, not how easy students find it to make friends. It cannot explain why students are or are not in relationships, measure the quality of their friendships, or establish that attending a particular institution causes differences in relationship status.
+
+
+## hunch_6 = Do Tattoos Make People Look Attractive
+
+### 1. See the table
+
+What is a case? Which columns are Quant / Qual? What is missing?
+
+``` r
+# glimpse() / inspect() / skim()
+```
+```{r}
+glimpse(hunch_6)  
+
+ skim(hunch_6)
+```
+
+### 2. Ask
+
+Q1 .How does having tattoos relate to people's opinions about tattoo attractiveness, and how do these opinions differ by gender?
+
+### 3. Choose a mark
+
+Geom, map mark, or (later) test that matches the pair type. Name it before you code.
+
+I will use bar charts separated by gender to compare Yes and No opinions about tattoo attractiveness. The x-axis will represent the opinions, and the y-axis will show the number of respondents.
+
+For the simplified graph, the bar colors will represent the opinions rather than tattoo ownership. This makes the comparison between Yes and No responses within each gender easier to read.
+
+
+### 4. Predict
+
+What do we think we will see? One sentence, before Run.
+
+
+I predict that most respondents may consider tattoos attractive, but opinions may differ between male and female respondents.
+
+
+### 5. Make
+
+Human brick first. Optional: one AI prompt, pasted below, only for what section 3 named.
+
+
+
+
+
+
+```{r}
+
+library(tidyverse)
+library(ggformula)
+
+hunch_6 |>
+  gf_bar(
+    ~ Opinion,
+    fill = ~ Opinion
+  ) |>
+  gf_facet_wrap(~ Gender) |>
+  gf_labs(
+    title = "Do Tattoos Make People Look Attractive?",
+    subtitle = "Comparing opinions between female and male respondents",
+    x = "Opinion on Tattoo Attractiveness",
+    y = "Number of Respondents",
+    fill = "Opinion",
+    caption = "Source: FOSEDA Panel E, Hunch 6 dataset"
+  )
+```
+
+### 6. Say
+
+Caption + one sentence we will stand behind. Title is a sentence, not a column name.
+
+The graph shows the number of male and female respondents who answered Yes or No to the question of whether tattoos make people look attractive.
+
+Finding to report: Among female respondents, ___ answered Yes and ___ answered No. Among male respondents, ___ answered Yes and ___ answered No. This suggests that opinions about tattoo attractiveness ___ between the two groups.
+
+
+### 7. Limit
+
+What this panel cannot do. Which kit table we refused to abuse.
+
+The data records opinions about tattoo attractiveness, not objective attractiveness. It cannot establish whether tattoos actually make someone more attractive or explain why respondents hold particular opinions. The simplified graph also does not show whether respondents have tattoos themselves, so it cannot establish whether tattoo ownership is related to those opinions.
 
